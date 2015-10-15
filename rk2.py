@@ -2,6 +2,7 @@
 
 '''
 Este script resuelve el pendulo simple usando RK2.
+ARREGLADO
 '''
 
 import numpy as np
@@ -16,7 +17,10 @@ plt.clf()
 
 t = np.linspace(0, 5 * 2 * np.pi / w, 400)
 
-plt.plot(t, A * np.sin(w * t))
+#se tenia: plt.plot(t, A * np.sin(w * t))
+#se cambia ya que la funcion que cumple las condiciones
+#iniciales(t=0): phi0=A, dphi0/dt=0 es con coseno.
+plt.plot(t, A * np.cos(w * t))
 
 
 def f(phi, w):
@@ -33,8 +37,13 @@ def get_k2(phi_n, w_n, h, f):
 
 def rk2_step(phi_n, w_n, h, f):
     k2 = get_k2(phi_n, w_n, h, f)
-    phi_n1 = phi_n + k2[0] * h
-    w_n1 = w_n + k2[1] * h
+    #se tenia: phi_n1 = phi_n + k2[0] * h
+    phi_n1 = phi_n + k2[0]
+    #se tenia: w_n1 = w_n + k2[1] * h
+    w_n1 = w_n + k2[1]
+    #en ambos casos se estaba multiplicando por h,
+    #cuando en verdad eso ya habia ocurrido en la definicion
+    #de get_k2.
     return phi_n1, w_n1
 
 N_steps = 40000
